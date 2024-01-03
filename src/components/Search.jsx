@@ -1,48 +1,6 @@
-// import React from 'react'
-
-// import { useState } from 'react'
-
-// async function Search(prop) {
-//   const [searchInput, setSearchInput] = useState("")
-//   const { accessToken } = prop
-//   console.log("Access Token: ", accessToken)
-
-//   function searchInputChange(event) {
-//     event.preventDefault();
-//     setSearchInput(event.target.artist.value)
-//     console.log(searchInput);
-   
-//   }
-  
-//   const artistParameters = {
-//     method: 'GET',
-//     headers: {
-//       'Content-Type': 'application/json',
-//       'Authorization': 'Bearer ' + accessToken
-//     }
-//   }
-    
-//   const artistId = await fetch('https://api.spotify.com/v1/search?q='+ searchInput + '&type=artist', artistParameters)
-//   .then(response => response.json())
-//   .then(data => console.log(data))
-
-// const TopTracks= await fetch(`https://api.spotify.com/v1/artists/${artistId}/top-tracks`)
-
-//  return(
-//   <div>
-//     <form onSubmit={searchInputChange}>
-//       <input type="text" name='artist' placeholder="Search for an artist" />
-//       <br />
-//       <button type="submit">Search</button>
-//     </form>
-//   </div>
-//  ) 
-// }
-
-// export default Search;
-
 import React, { useState } from 'react';
 import TopTracks from './TopTracks';
+import RelatedArtists from './RelatedArtists'
 
 async function searchSpotify(searchInput, accessToken) {
   const artistParameters = {
@@ -76,7 +34,7 @@ function Search({ accessToken }) {
     event.preventDefault();
     const result = await searchSpotify(searchInput, accessToken);
     setArtistId(result.artists.items[0].id);
-    console.log(result.artists.items[0].images[0].url)
+    console.log(result.artists.items[0])
     setImage(result.artists.items[0].images[0].url)
   };
 
@@ -95,7 +53,12 @@ function Search({ accessToken }) {
         <br />
       </div>
       <br />
-    {artistId ? <TopTracks artistId={artistId} accessToken={accessToken}/> : null}
+      <hr />
+    {artistId ? <TopTracks artistId={artistId} accessToken={accessToken} artistName={searchInput}/> : null}
+    <br />
+    <br />
+    <hr />
+    {artistId ? <RelatedArtists artistId={artistId} accessToken={accessToken}/>: null}
     </>
   );
 }

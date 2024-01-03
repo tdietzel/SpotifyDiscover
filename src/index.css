@@ -1,0 +1,10 @@
+body{
+text-align: center;
+}
+
+ol { 
+	position: relative; 
+	display: inline-block;
+  text-align: center; 
+	padding-left: 1em; 
+} 

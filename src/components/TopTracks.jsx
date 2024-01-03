@@ -1,5 +1,6 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 async function fetchTopTracks(artistId, accessToken) {
   const artistParameters = {
@@ -19,8 +20,9 @@ async function fetchTopTracks(artistId, accessToken) {
   }
 }
 
-function TopTracks({artistId, accessToken}) {
-  const [TopTracks, setTopTracks] = useState([]);
+function TopTracks({artistId, accessToken, artistName}) {
+  const [topTracks, setTopTracks] = useState([]);
+  
   useEffect(() => {
     const fetchData = async () => {
       const tracks = await fetchTopTracks(artistId, accessToken);
@@ -32,20 +34,16 @@ function TopTracks({artistId, accessToken}) {
     fetchData();
   }, [artistId, accessToken]);
 
-  // // const artistId = await fetch('https://api.spotify.com/v1/search?q='+ searchInput + '&type=artist', artistParameters)
-  // const topTrackResults = await fetch(`https://api.spotify.com/v1/artists/${artistId}/top-tracks/ES`, artistParameters)
-   
-  //   .then(response => response.json())
-  //   .then(data => console.log(data))
-
   return (
     <div>
-      <h1>Top Tracks</h1>
-      <ul>
-        {TopTracks.map((track) => (
-          <li key={track.id}>{track.name}</li>
+      <h1>Top Tracks for {artistName}</h1>
+      <ol>
+        {topTracks.map((track) => (
+          <li key={track.id}>
+            <a href={track.external_urls.spotify} target="_blank" rel="noopener noreferrer">
+            {track.name}</a></li>
         ))}
-      </ul>
+      </ol>
     </div>
   )
 }
