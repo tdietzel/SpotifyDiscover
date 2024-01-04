@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
-import { Container, Row, Card} from 'react-bootstrap'
+import { Container, Row, Card } from 'react-bootstrap'
 
 async function fetchRelatedArtist(artistId, accessToken) {
   const artistParameters = {
@@ -52,9 +52,9 @@ function RelatedArtists({artistId, accessToken}) {
       {relatedArtist.map(artist => (
         <Card key={artist.id} className='col mb-4' onClick={() => handleCardClick(artist.id)}>
           <Card.Img variant='top' src={artist.images[0]?.url || 'placeholder-image-url'} alt={artist.name} />
-          <Card.Body>
-            <Card.Title>{artist.name}</Card.Title>
-          </Card.Body>
+          <div className="card-overlay">
+          <h1>{artist.name}</h1>
+          </div>
         </Card>
       ))}
     </Row>

@@ -24,6 +24,9 @@ async function searchSpotify(searchInput, accessToken) {
 function Search({ accessToken }) {
   const [searchInput, setSearchInput] = useState("");
   const [artistId, setArtistId] = useState(null);
+  const [artistFollowing, setArtistFollowing] = useState(null);
+  const [artistGenres, setArtistGenres] = useState(null);
+  const [popularityResult, setPopularityResult] = useState(null);
   const [image, setImage] = useState(null);
   const handleSearchInputChange = (event) => {
     event.preventDefault();
@@ -34,9 +37,19 @@ function Search({ accessToken }) {
     event.preventDefault();
     const result = await searchSpotify(searchInput, accessToken);
     setArtistId(result.artists.items[0].id);
-    console.log(result.artists.items[0])
-    setImage(result.artists.items[0].images[0].url)
-  };
+    setArtistFollowing(result.artists.items[0].followers.total);
+    setArtistGenres(result.artists.items[0].genres);
+    setImage(result.artists.items[0].images[0].url);
+
+    const currentPopularity = result.artists.items[0].popularity;
+    if (currentPopularity > 75) {
+      setPopularityResult("Very High!");
+    } else if (currentPopularity > 50) {
+      setPopularityResult("High");
+    } else {
+      setPopularityResult("Low");
+    }
+    };
 
   return (
     <>
@@ -49,7 +62,14 @@ function Search({ accessToken }) {
       </div>
       <br />
       <div>
-        {artistId ? <img src={image} alt="artist" height="200" width="200"/> : null}
+        {artistId ?
+          <div>
+            <img src={image} alt="artist" height="200" width="200"/>
+            <h4>Followers: {artistFollowing}</h4>
+            <h5>Popularity: {popularityResult}</h5>
+            <h6>Genres: <span id='genres'>{artistGenres.join(', ')}</span></h6>
+          </div>
+        : null}
         <br />
       </div>
       <br />
