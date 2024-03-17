@@ -1,5 +1,4 @@
-import React from 'react'
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 async function fetchTopTracks(artistId, accessToken) {
@@ -15,7 +14,6 @@ async function fetchTopTracks(artistId, accessToken) {
     const data = await topTrackResults.json();
     return data.tracks;
   } catch (error) {
-    console.log("error fetching top tracks", error)
     return null;
   }
 }
@@ -35,17 +33,22 @@ function TopTracks({artistId, accessToken, artistName}) {
   }, [artistId, accessToken]);
 
   return (
-    <div>
-      <h1>Top Tracks for {artistName}</h1>
-      <ol>
-        {topTracks.map((track) => (
-          <li key={track.id}>
-            <a href={track.external_urls.spotify} target="_blank" rel="noopener noreferrer">
-            {track.name}</a></li>
-        ))}
-      </ol>
-    </div>
+    <>
+      <h1 style={{textShadow: '2px 2px 4px white'}}>Top Tracks for {artistName}</h1>
+      <div class='topTracksBackground'>
+        <ol style={{color:'red'}}>
+          {topTracks.map((track) => (
+            <div class='topTracks'>
+              <li key={track.id}>
+                <a style={{textDecoration: 'none', color: 'white'}} href={track.external_urls.spotify} target="_blank" rel="noopener noreferrer">
+                  {track.name}
+                </a>
+              </li>
+            </div>
+          ))}
+        </ol>
+      </div>
+    </>
   )
 }
-
 export default TopTracks;

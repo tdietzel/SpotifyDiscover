@@ -1,5 +1,4 @@
-import React from 'react'
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Container, Row, Card } from 'react-bootstrap'
 
 async function fetchRelatedArtist(artistId, accessToken) {
@@ -34,32 +33,36 @@ function RelatedArtists({artistId, accessToken}) {
     fetchData();
   }, [artistId, accessToken]);
 
-  const handleCardClick = (artistId) => {
+  const handleCardClick = (artistId, artistName) => {
     const clickedArtist = relatedArtist.find(artist => artist.id === artistId);
-  
+    
     if (clickedArtist) {
       const artistURL = clickedArtist.external_urls.spotify;
       window.open(artistURL, '_blank');
+
+      if (onArtistClick) {
+        onArtistClick(artistName);
+      }
     }
   };
 
   return (
-<>
-  <h1>Related Artists</h1>
-  <p>Click Related Artist</p>
-  <Container>
-    <Row className='mx-2 row row-cols-3'>
-      {relatedArtist.map(artist => (
-        <Card key={artist.id} className='col mb-4' onClick={() => handleCardClick(artist.id)}>
-          <Card.Img variant='top' src={artist.images[0]?.url || 'placeholder-image-url'} alt={artist.name} />
-          <div className="card-overlay">
-          <h1>{artist.name}</h1>
-          </div>
-        </Card>
-      ))}
-    </Row>
-  </Container>
-  </>
+    <>
+      <h1>Related Artists</h1>
+      <p>Click Related Artist</p>
+      <Container>
+        <Row className='mx-2 row row-cols-3'>
+          {relatedArtist.map(artist => (
+            <Card key={artist.id} className='col mb-4' onClick={() => handleCardClick(artist.id, artist.name)}>
+              <Card.Img variant='top' src={artist.images[0]?.url || 'placeholder-image-url'} alt={artist.name} />
+              <div className="card-overlay">
+                <h1>{artist.name}</h1>
+              </div>
+            </Card>
+          ))}
+        </Row>
+      </Container>
+    </>
   )
 }
 export default RelatedArtists

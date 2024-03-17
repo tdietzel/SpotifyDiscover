@@ -20,10 +20,9 @@ function App() {
   if (access_token) {
     return (
       <>
-      <Search accessToken={access_token}/>
+        <Search accessToken={access_token}/>
       </>
     )
   }
 }
-
 export default App;
